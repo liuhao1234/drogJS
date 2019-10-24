@@ -1,0 +1,59 @@
+$(function(){
+    var idIndex = 7;
+    var viewInfo = {
+        clientInfo:{
+            width:1366,
+            height:768
+        },
+        margin:10,
+        itemList:[{
+            id:"test01",
+            title:'地市柱图',
+            moreList:["删除"],
+            itemInfo:{
+                left:100,
+                top:100,
+                width:300,
+                height:280
+            }
+        },{
+            id:"test02",
+            title:'地市折线图',
+            moreList:["删除"],
+            itemInfo:{
+                left:420,
+                top:420,
+                width:400,
+                height:300,
+            }
+        },{
+            id:"test03",
+            title:'地市饼图',
+            moreList:["删除"],
+            itemInfo:{
+                left:920,
+                top:70,
+                width:400,
+                height:300,
+            }
+        }]
+    }
+    var drog =  $("#drogContainer").drog({
+                    viewInfo:viewInfo,
+                    limitSize:{//元素默认的宽高，该配置可不传
+                        width:256,
+                        height:218
+                    },
+                    renderItem:function(idList){//需要渲染的元素id数组
+                        console.log(idList)
+                    }
+                });
+    $("#addDrogItem").click(function(){
+        drog.addDrogItem({
+            id:"test0"+idIndex,
+            title:'地市饼图aaa'
+        })
+        idIndex++
+    })
+
+})

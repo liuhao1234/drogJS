@@ -1,0 +1,120 @@
+/* common */
+.clear-fixed-after:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.drog-item-wrap{
+    cursor: move;
+    user-select: none;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:258px;
+    height:218px;
+    padding:10px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    transition: box-shadow .5s ease;
+    -webkit-transition: box-shadow .5s ease;
+    -moz-transition: box-shadow .5s ease;
+    -ms-transition: box-shadow .5s ease;
+    -o-transition: box-shadow .5s ease;
+}
+.drog-item-wrap:hover{
+    box-shadow:0 0 5px rgba(0,0,0,.2);
+    transition: box-shadow .3s ease;
+    -webkit-transition: box-shadow .3s ease;
+    -moz-transition: box-shadow .3s ease;
+    -ms-transition: box-shadow .3s ease;
+    -o-transition: box-shadow .3s ease;
+}
+.drog-item-wrap:hover .drog-item-resize{
+    display: block;
+}
+.item-in-fullscreen{
+    z-index:9999;
+}
+.item-to-top{
+    z-index:9999;
+}
+.item-in-fullscreen:hover .drog-item-resize{
+    display:none;
+}
+.drog-item-resize{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+    color:#9e9e9e;
+    display: none;
+}
+.drog-item-resize:hover{
+    color:#333;
+}
+.drog-item-inner{
+    position: relative;
+    cursor: default;
+}
+.drog-item-header{
+    height:22px;
+    line-height:22px;
+}
+.drog-item-title{
+    float:left;
+}
+.drog-item-title-text{
+    font-size: 16px;
+    margin-right:5px;
+}
+.drog-item-title-tip{
+    color:#ccc;
+}
+.drog-item-title-tip:hover{
+    color:#737373;
+}
+.drog-item-wrap:hover .drog-item-tools{
+    display: block;
+}
+.drog-item-tools{
+    float:right;
+    display:none;
+    position: relative;
+}
+.drog-item-tools ul{
+    display:none;
+    position: absolute;
+    top: 22px;
+    right: -45px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 12px;
+    width: 60px;
+    background: #fff;
+    box-shadow: 7px 6px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+.drog-item-tools ul li{
+    padding:2px 0;
+}
+.drog-item-tools ul li:hover{
+    background:#f4f4f4;
+}
+.item-tool{
+    color:#737373;
+    display: inline-block;
+    margin:0 5px;
+    cursor: pointer;
+}
+.item-tool:hover{
+    color:#333;
+}
+.drog-item-main{
+    height: 176px;
+}
