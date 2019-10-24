@@ -2,7 +2,7 @@ $(function(){
     var idIndex = 7;
     var viewInfo = {
         clientInfo:{
-            width:1366,
+            width:1920,
             height:768
         },
         margin:10,
@@ -45,7 +45,7 @@ $(function(){
                         height:218
                     },
                     renderItem:function(idList){//需要渲染的元素id数组
-                        console.log(idList)
+                        console.log("需要渲染图表的id",idList)
                     }
                 });
     $("#addDrogItem").click(function(){
