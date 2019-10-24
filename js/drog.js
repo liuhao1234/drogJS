@@ -20,7 +20,7 @@
         var $window = $(window);
         var direction = [];//drogItem移动方向,direction[0]是左右移动的距离,左移为负数，direction[1]是上下移动的距离，上移为负数
         var itemDetail = {}; //记录当前操作的drogItem的数据
-        var touchSpace = 30; //贴合间距，当元素之间距离小于touchSpace会自动贴合
+        var touchSpace = 50; //贴合间距，当元素之间距离小于touchSpace会自动贴合
         var animateSpeed = 300;//默认动画速度
         var resizeTimer = null;
         var scrollTimer = null;
@@ -102,7 +102,7 @@
                     var backWayDirection = [-direction[0],-direction[1]]
                     drogItemMove($drogItem,backWayDirection);
                 }else{//drogitem没重叠，判断位置关系做贴合
-                    var positionDetail = borderUponLines(itemDetail);
+                    var positionDetail = borderUponLines(itemDetail,false);
                     var plyingUpDirection = getPlyingUpDirection(positionDetail);
                     drogItemMove($drogItem,plyingUpDirection);
                 }
@@ -158,7 +158,7 @@
                     var plyingUpSize = [itemStartWidth,itemStartHeight]
                     drogItemSize($drogItem,plyingUpSize);
                 }else{
-                    var positionDetail = borderUponLines(itemDetail);
+                    var positionDetail = borderUponLines(itemDetail,false);
                     var finalSize = getPlyingUpSize(positionDetail);
                     drogItemSize($drogItem,finalSize)
                 }
@@ -422,8 +422,9 @@
             }
         }
 
-        function borderUponLines(itemDetail){//获取相邻边的距离touchSpace
+        function borderUponLines(itemDetail,all){//获取相邻边的距离touchSpace,all为true的时候计算到上方元素的距离，否则计算距离周边元素上方距离
             var curCoords = getCoordsByItemInfo(itemDetail.itemInfo);
+            var itemDefaultMargin = $this.viewInfo.margin;
             var leftLine = curCoords[0][0];//左边的线x
             var rightLine = curCoords[1][0];//右边的线x
             var topLine = curCoords[0][1];//上边线y
@@ -439,8 +440,8 @@
                 var thisRightLine = coords[1][0];//右边的线
                 var thisTopLine = coords[0][1];//上边线
                 var thisBottomLine = coords[2][1];//下边线
-                var isHorizontalContain = (leftLine>thisLeftLine&&leftLine<thisRightLine)||(rightLine>thisLeftLine&&rightLine<thisRightLine)||(leftLine<thisLeftLine&&rightLine>thisRightLine) //水平区间存在交叉
-                var isVerticalContain = (topLine>thisTopLine&&topLine<thisBottomLine)||(bottomLine<thisBottomLine&&bottomLine>thisTopLine)||(topLine<thisTopLine&&bottomLine>thisBottomLine)
+                var isHorizontalContain = (leftLine>=thisLeftLine&&leftLine<thisRightLine)||(rightLine>thisLeftLine&&rightLine<=thisRightLine)||(leftLine<=thisLeftLine&&rightLine>=thisRightLine) //水平区间存在交叉
+                var isVerticalContain = (topLine>=thisTopLine&&topLine<thisBottomLine)||(bottomLine<=thisBottomLine&&bottomLine>thisTopLine)||(topLine<=thisTopLine&&bottomLine>=thisBottomLine)
                 // console.log(isHorizontalContain)
                 if(isHorizontalContain){
                     if(topLine>thisBottomLine){
@@ -452,6 +453,13 @@
                         bottomMargins.push(eachMargin);
                         console.log(itemDetail.title+"在"+value.title+"上面"+eachMargin+"px处")
                     }
+
+                    if((leftLine>thisLeftLine)&&!all){
+                        leftMargins.push(leftLine-thisLeftLine+itemDefaultMargin);
+                    }
+                    if((rightLine<thisRightLine)&&!all){
+                        rightMargins.push(thisRightLine-rightLine+itemDefaultMargin)
+                    }
                 }
                 if(isVerticalContain){
                     if(leftLine>thisRightLine){
@@ -462,6 +470,12 @@
                         var eachMargin = thisLeftLine-rightLine;
                         rightMargins.push(eachMargin)
                         console.log(itemDetail.title+"在"+value.title+"左面"+eachMargin+"px处")
+                    }
+                    if((topLine>thisTopLine)&&!all){
+                        topMargins.push(topLine-thisTopLine+itemDefaultMargin)
+                    }
+                    if((bottomLine<thisBottomLine)&&!all){
+                        bottomMargins.push(thisBottomLine-bottomLine+itemDefaultMargin)
                     }
                 }
             })
@@ -498,7 +512,7 @@
 
         function getPlyingUpSize(positionDetail){//放大缩小时判断贴合方式
             var itemDefaultMargin = $this.viewInfo.margin;
-            console.log(itemDefaultMargin)
+            // console.log(itemDefaultMargin)
             var rightMargin = positionDetail[1];
             var bottomMargin = positionDetail[2];
             var startWidth = itemDetail.itemInfo.width;
@@ -556,7 +570,7 @@
         function getNewDrogItemPosition(newDrogItemDetail){//新增元素时确定元素位置
             $.each($this.viewInfo.itemList,function(index,value){
                 var itemDefaultMargin = $this.viewInfo.margin;
-                var borderMarginSpace = borderUponLines(value);
+                var borderMarginSpace = borderUponLines(value,true);
                 var topMargin = borderMarginSpace[0]
                 var rightMargin = borderMarginSpace[1]
                 var bottomMargin = borderMarginSpace[2]
@@ -630,7 +644,7 @@
 
         /* 初始化 */
         this.initView(this.viewInfo);
-
+        
         /* 返回实例化对象 */
         return this;
     }
