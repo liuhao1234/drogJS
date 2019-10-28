@@ -18,6 +18,7 @@
         /* 定义私有变量 */
         var $document = $(document);
         var $window = $(window);
+        var $this = this;
         var direction = [];//drogItem移动方向,direction[0]是左右移动的距离,左移为负数，direction[1]是上下移动的距离，上移为负数
         var itemDetail = {}; //记录当前操作的drogItem的数据
         var touchSpace = 50; //贴合间距，当元素之间距离小于touchSpace会自动贴合
@@ -25,7 +26,6 @@
         var resizeTimer = null;
         var scrollTimer = null;
         var hasRenderChartIdList = [];//已经渲染过的图表元素id
-        var $this = this;
 
         var clientInfo = {//当前浏览器可视区的大小
             width:$window.width(),
@@ -64,7 +64,7 @@
             //鼠标落点距离this左侧与上侧距离
             var startPageX = ev.pageX;
             var startPageY = ev.pageY;
-            
+            direction=[0,0];
             $document.mousemove(function(e){
                 // console.log(e)
                 // 获取鼠标距离body左侧与上侧的距离
@@ -97,6 +97,8 @@
             $document.mouseup(function(){
                 $document.unbind("mousemove");
                 $document.unbind("mouseup");
+                // console.log(direction)
+                if(direction[0]===0&&direction[1]===0) return;
                 var isOverlap = isOverlapWidthOthers(itemDetail)
                 if(isOverlap){//drogitem重叠需要回到原位置
                     var backWayDirection = [-direction[0],-direction[1]]
@@ -402,7 +404,7 @@
                 var isOverlap = isOverlapBoth(curCoords,coords)
                 if(isOverlap){
                     result = true
-                    console.log(itemDetail.title+"与"+value.title+"重叠")
+                    // console.log(itemDetail.title+"与"+value.title+"重叠")
                     return false;
                 }
             })
@@ -447,11 +449,11 @@
                     if(topLine>thisBottomLine){
                         var eachMargin = topLine-thisBottomLine;
                         topMargins.push(eachMargin);
-                        console.log(itemDetail.title+"在"+value.title+"下面"+eachMargin+"px处")
+                        // console.log(itemDetail.title+"在"+value.title+"下面"+eachMargin+"px处")
                     }else{
                         var eachMargin = thisTopLine-bottomLine;
                         bottomMargins.push(eachMargin);
-                        console.log(itemDetail.title+"在"+value.title+"上面"+eachMargin+"px处")
+                        // console.log(itemDetail.title+"在"+value.title+"上面"+eachMargin+"px处")
                     }
 
                     if((leftLine>thisLeftLine)&&!all){
@@ -465,11 +467,11 @@
                     if(leftLine>thisRightLine){
                         var eachMargin = leftLine-thisRightLine;
                         leftMargins.push(eachMargin)
-                        console.log(itemDetail.title+"在"+value.title+"右面"+eachMargin+"px处")
+                        // console.log(itemDetail.title+"在"+value.title+"右面"+eachMargin+"px处")
                     }else{
                         var eachMargin = thisLeftLine-rightLine;
                         rightMargins.push(eachMargin)
-                        console.log(itemDetail.title+"在"+value.title+"左面"+eachMargin+"px处")
+                        // console.log(itemDetail.title+"在"+value.title+"左面"+eachMargin+"px处")
                     }
                     if((topLine>thisTopLine)&&!all){
                         topMargins.push(topLine-thisTopLine+itemDefaultMargin)
@@ -503,10 +505,10 @@
             }else{
                 minRightMargin = clientInfo.width - rightLine;
             }
-            console.log("上侧可移动空间距离:",minTopMargin+"px")
-            console.log("下侧可移动空间距离:",minBottomMargin?minBottomMargin+'px':'随意挪动')
-            console.log("左侧可移动空间距离:",minLeftMargin+"px")
-            console.log("右侧侧可移动空间距离:",minRightMargin+"px")
+            // console.log("上侧可移动空间距离:",minTopMargin+"px")
+            // console.log("下侧可移动空间距离:",minBottomMargin?minBottomMargin+'px':'随意挪动')
+            // console.log("左侧可移动空间距离:",minLeftMargin+"px")
+            // console.log("右侧侧可移动空间距离:",minRightMargin+"px")
             return [minTopMargin,minRightMargin,minBottomMargin,minLeftMargin]
         }
 
