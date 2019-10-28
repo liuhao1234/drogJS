@@ -45,7 +45,7 @@ $(function(){
                         height:218
                     },
                     renderItem:function(idList){//需要渲染的元素id数组
-                        console.log("需要渲染图表的id",idList)
+                        // console.log("需要渲染图表的id",idList)
                     }
                 });
     $("#addDrogItem").click(function(){
